@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+const { width } = Dimensions.get('window');
 
 const stylesDashboard = StyleSheet.create({
   header: {
@@ -23,7 +24,7 @@ const stylesDashboard = StyleSheet.create({
     fontFamily: 'Montserrat_500Medium',
     paddingHorizontal: 20,
     fontSize: 18,
-    width: '92%',
+    width: '100%',
     color: '#fff'
   },
   contentServ: {
@@ -76,6 +77,34 @@ const stylesDashboard = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center', // Alinha os itens verticalmente no centro
     justifyContent: 'space-between'
+  },
+  categoriesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    padding: 10,
+  },
+  categoryItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: (width / 3) - 20,
+    height: 100,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 10,
+    marginBottom: 15,
+  },
+  categoryText: {
+    marginTop: 10,
+    fontSize: 14,
+    color: '#333',
+  },
+    loginArea: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userEmail: {
+    color: 'red',
+
   },
 });
 

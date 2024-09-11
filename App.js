@@ -39,7 +39,7 @@ function Home() {
         },
       }}>
       <Stack.Screen name="Login" 
-      component={Dashboard} 
+      component={Login} 
       options={{headerShown:false}} 
       />
       
@@ -65,7 +65,7 @@ function Home() {
       <Stack.Screen
         name="Dashboard"
         component={Dashboard}
-        options={({ title: '' }, { headerLeft: null })}
+        options={{headerShown:false}} 
       />
       <Stack.Screen
         name="Revisao"

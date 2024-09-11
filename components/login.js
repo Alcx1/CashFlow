@@ -8,13 +8,13 @@ import {
   TouchableOpacity,
   Dimensions,
   SafeAreaView,
-  LayoutAnimation,  // Adicionei o LayoutAnimation
-  UIManager,        // Adicionei o UIManager
+  LayoutAnimation,
+  UIManager,
   Platform
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'; // Importe o método correto de autenticação
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth'; // Importe a função de redefinição de senha
 import firebaseConfig from '../database/firebase';  // Certifique-se de importar sua configuração
 import styles from './Styles/styles'; // Importa estilos globais
 
@@ -68,9 +68,27 @@ export default class Login extends Component {
         })
         .catch((error) => {
           this.setState({ isLoading: false });
-          alert(error.message);
+          alert('E-mail ou senha incorretos');
         });
     }
+  };
+
+  // Função para resetar senha
+  resetPassword = () => {
+    const { email } = this.state;
+
+    if (email === '') {
+      alert('Por favor, insira o seu e-mail para redefinir sua senha.');
+      return;
+    }
+
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert('Um link para redefinir sua senha foi enviado para o seu e-mail.');
+      })
+      .catch((error) => {
+        alert('Ocorreu um erro. Verifique se o e-mail está correto.');
+      });
   };
 
   render() {
@@ -110,6 +128,11 @@ export default class Login extends Component {
           style={styles.buttonRegister}
           onPress={() => this.userLogin()}>
           <Text style={styles.textButton}>Login</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => this.resetPassword()}>
+          <Text style={styles.textForgot}>Esqueceu sua senha?</Text>
         </TouchableOpacity>
 
         <TouchableOpacity

@@ -82,8 +82,26 @@ const styles = StyleSheet.create({
     left: 10,
     padding: 10,
     zIndex: 1, // Garante que a seta fique acima de outros elementos
+  },  googleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
   },
-  // Outros estilos que você deseja reutilizar
+  googleIcon: {
+    width: 24,
+    height: 24,
+    marginRight: 10,
+  },
+  googleButtonText: {
+    color: '#1E1E1E',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
 });
 
 export default styles;
