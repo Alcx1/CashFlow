@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     left: 10,
     padding: 10,
     zIndex: 1, // Garante que a seta fique acima de outros elementos
-  },  googleButton: {
+  }, googleButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
