@@ -18,9 +18,11 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
 import firebaseConfig from '../database/firebase';
 import styles from './Styles/styles';
 
+// Inicializa o Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// Ativa animações em dispositivos Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
@@ -36,27 +38,33 @@ export default class Signup extends Component {
     };
   }
 
+  // Atualiza os valores de entrada do formulário
   updateInputVal = (val, prop) => {
     const state = this.state;
     state[prop] = val;
     this.setState(state);
   };
 
+  // Função de registro de usuário
   registerUser = () => {
     const { email, password, displayName } = this.state;
 
+    // Valida se os campos estão preenchidos
     if (email === '' || password === '' || displayName === '') {
-      Alert.alert('Erro', 'Insira seus dados para se registrar.');
+      Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
 
     this.setState({ isLoading: true });
 
+    // Registra o usuário com Firebase Authentication
     createUserWithEmailAndPassword(auth, email, password)
       .then((res) => {
+        // Atualiza o perfil do usuário com o displayName
         updateProfile(res.user, {
           displayName: displayName,
-        }).then(() => {
+        })
+        .then(() => {
           Alert.alert('Sucesso', `Registrado como: ${res.user.email}`);
           this.setState({
             isLoading: false,
@@ -65,12 +73,12 @@ export default class Signup extends Component {
             password: '',
           });
           LayoutAnimation.easeInEaseOut();
-          this.props.navigation.navigate('Login');
+          this.props.navigation.navigate('Login'); // Navega para a tela de login
         });
       })
       .catch((error) => {
         this.setState({ isLoading: false });
-        Alert.alert('Erro', error.message);
+        Alert.alert('Erro', error.message); // Mostra uma mensagem de erro
       });
   };
 
@@ -99,6 +107,7 @@ export default class Signup extends Component {
         <Text style={styles.saudacao}>Olá,</Text>
         <Text style={styles.saudacao2}>Vamos realizar seu cadastro.</Text>
 
+        {/* Campo de entrada de Nome */}
         <TextInput
           color="#1E1E1E"
           placeholderTextColor="#1E1E1E"
@@ -108,6 +117,7 @@ export default class Signup extends Component {
           onChangeText={(val) => this.updateInputVal(val, 'displayName')}
         />
 
+        {/* Campo de entrada de E-mail */}
         <TextInput
           color="#1E1E1E"
           placeholderTextColor="#1E1E1E"
@@ -117,6 +127,7 @@ export default class Signup extends Component {
           onChangeText={(val) => this.updateInputVal(val, 'email')}
         />
 
+        {/* Campo de entrada de Senha */}
         <TextInput
           color="#1E1E1E"
           placeholderTextColor="#1E1E1E"
@@ -128,10 +139,12 @@ export default class Signup extends Component {
           maxLength={15}
         />
 
+        {/* Botão de Registrar */}
         <TouchableOpacity style={styles.buttonRegister} onPress={this.registerUser}>
           <Text style={styles.textButton}>Registrar</Text>
         </TouchableOpacity>
 
+        {/* Link para Login */}
         <TouchableOpacity onPress={() => {
           LayoutAnimation.easeInEaseOut();
           this.props.navigation.navigate('Login');

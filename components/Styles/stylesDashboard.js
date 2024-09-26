@@ -109,20 +109,28 @@ const stylesDashboard = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  userEmail: {
+  user: {
     color: '#1E1E1E',
     fontSize: 14,
     fontWeight: 'bold',
     maxWidth: '80%', // Limita o espaço para o e-mail em 80% da largura da tela
     flexShrink: 1, // Reduz o texto se necessário
-    marginLeft: 10,
-    marginTop: 5
+    marginLeft:-80,
+    marginTop: 14
 
+  },
+  usersaudacao: {
+    color: '#1E1E1E',
+    fontSize: 14,
+    fontWeight: 'bold',
+    maxWidth: '80%', // Limita o espaço para o e-mail em 80% da largura da tela
+    flexShrink: 1, // Reduz o texto se necessário
+    marginLeft:-53,
   },
   profileIcon: {
     position: 'absolute',
     left: 40,  // Ícone de perfil fica mais à esquerda
-    top: 40,
+    top: 50,
   }, 
   destaquesContainer: {
     marginTop: 20,
@@ -159,24 +167,24 @@ const stylesDashboard = StyleSheet.create({
     left: 10, // Ajuste para o canto esquerdo
   },
   destaqueLoja: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 'bold',
     color: '#333llll',
     marginTop: 10, 
     flexDirection: 'row',
-    left: 20,// Deixa espaço abaixo da logo
+    left: 30,// Deixa espaço abaixo da logo
   },
   destaqueCategoria: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#666',
     marginBottom: 5,
     alignItems: 'center',
     flexDirection: 'row',
     left: 20,
+    top:5
   },
   estrelas: {
     flexDirection: 'row',
-    left: 70,
   },
   sectionTitle: {
     fontSize: 20,

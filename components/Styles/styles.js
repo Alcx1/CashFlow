@@ -25,14 +25,14 @@ const styles = StyleSheet.create({
   saudacao: {
     fontSize: 60,
     fontWeight: 'bold',
-    color: '#1E1E1E',
+    color: '#0A3D52',
     marginTop: 120,
   },
   saudacao2: {
     justifyContent: 'center',
     fontSize: 15,
     fontWeight: 'bold',
-    color: '#1E1E1E',
+    color: '#0A3D52',
   },
   inputEmail: {
     marginTop: 15,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   },
   buttonRegister: {
     marginTop: 15,
-    backgroundColor: '#1E1E1E',
+    backgroundColor: '#0A3D52',
     width: '80%',
     height: 45,
     justifyContent: 'center',

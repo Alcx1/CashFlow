@@ -14,15 +14,10 @@ import { name as appName } from './app.json';
 import Login from './components/login';
 import Cadastro from './components/cadastro';
 import Dashboard from './components/dashboard';
-import Alinhamento from './components/Alinhamento';
-import Agendamento from './components/Agendamento';
-import Agendamento2 from './components/Agendamento2';
-import Confirm from './components/Confirm';
-import Manutencao from './components/Manutencao';
-import Revisao from './components/Revisao';
 import SettingsScreen from './components/SettingsScreen';
 import FavoritesScreen from './components/FavoritesScreen';
-
+import ProfileScreen from './components/ProfileScreen'; // Adicionando o ProfileScreen
+import CategoryClientsScreen from './components/CategoryClientsScreen'
 // Inicializando o Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
@@ -37,11 +32,11 @@ const Tab = createBottomTabNavigator(); // Cria um Tab Navigator
 function MainTabNavigator() {
   return (
     <Tab.Navigator
+      initialRouteName='Home'
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused }) => {
           let iconName;
-          let iconColor = focused ? '#fff' : '#0A3D52'; // Ícone branco quando focado e #0A3D52 quando inativo
-
+          let iconColor = focused ? '#fff' : '#0A3D52'; // Ícone #fff quando focado e #0A3D52 quando inativo
           // Define o ícone para cada aba
           if (route.name === 'Home') {
             iconName = 'home';
@@ -91,8 +86,6 @@ function MainTabNavigator() {
         tabBarShowLabel: false, // Remove os nomes dos ícones
       })}
     >
-      
-      
       <Tab.Screen
         name="Settings"
         component={SettingsScreen} // Componente Configurações
@@ -108,7 +101,6 @@ function MainTabNavigator() {
         component={FavoritesScreen} // Componente Favoritos
         options={{ headerShown: false }}
       />
-      
     </Tab.Navigator>
   );
 }
@@ -144,26 +136,18 @@ function Home() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Confirm"
-        component={Confirm}
-      />
-      <Stack.Screen
-        name="Alinhamento"
-        component={Alinhamento}
-      />
-      <Stack.Screen
-        name="Agendamento"
-        component={Agendamento}
-        options={{ headerLeft: null }}
-      />
-      <Stack.Screen
-        name="Revisao"
-        component={Revisao}
+        name="SettingsScreen"
+        component={SettingsScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="SettingsScreen"
-        component={SettingsScreen}
+        name="ProfileScreen" // Adicionando a rota da tela de perfil
+        component={ProfileScreen} // Tela de perfil da loja
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CategoryClientsScreen" // Adicionando a rota da tela de perfil
+        component={CategoryClientsScreen } // Tela de perfil da loja
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

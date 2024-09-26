@@ -5,6 +5,6 @@ const firebaseConfig = {
   projectId: "loginapp-d3162",
   storageBucket: "loginapp-d3162.appspot.com",
   messagingSenderId: "200260358388",
-  appId: "1:200260358388:web:8ff637495dbf9e3af7cea1"
+  appId: "1:200260358388:web:6453ad55e4cd6604f7cea1"
 };
 export default firebaseConfig;

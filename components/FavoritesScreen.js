@@ -1,23 +1,68 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function FavoritesScreen() {
+const FavoritesScreen = () => {
+  const [favorites, setFavorites] = useState([]);
+
+  useEffect(() => {
+    const loadFavorites = async () => {
+      try {
+        const storedFavorites = await AsyncStorage.getItem('favorites');
+        if (storedFavorites) {
+          setFavorites(JSON.parse(storedFavorites));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    loadFavorites();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Página de Favoritos</Text>
+      <Text style={styles.title}>Favoritos</Text>
+      {favorites.length > 0 ? (
+        <FlatList
+          data={favorites}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.favoriteItem}>
+              <Text style={styles.favoriteText}>{item}</Text>
+            </View>
+          )}
+        />
+      ) : (
+        <Text style={styles.noFavorites}>Nenhum favorito adicionado.</Text>
+      )}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff'
+    padding: 16,
+    backgroundColor: '#fff',
   },
-  text: {
+  title: {
     fontSize: 24,
     fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  favoriteItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  favoriteText: {
+    fontSize: 18,
+  },
+  noFavorites: {
+    fontSize: 18,
+    color: 'gray',
   },
 });
+
+export default FavoritesScreen;

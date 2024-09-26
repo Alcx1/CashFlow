@@ -103,7 +103,7 @@ export default class Login extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <Text style={styles.saudacao}>Olá,</Text>
-        <Text style={styles.saudacao2}>Bem vindo(a) de volta.</Text>
+        <Text style={styles.saudacao2}>Seja bem vindo(a).</Text>
 
         <TextInput
           color="#1E1E1E"

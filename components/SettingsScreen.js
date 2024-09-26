@@ -8,9 +8,6 @@ const SettingsScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       {/* Cabeçalho da tela com o ícone de voltar */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Feather name="arrow-left" size={24} color="#1E1E1E" />
-        </TouchableOpacity>
         <Text style={styles.headerText}>Configurações</Text>
       </View>
 
