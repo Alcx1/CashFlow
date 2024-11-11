@@ -2,33 +2,29 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Feather } from '@expo/vector-icons'; // Ícones
+import { Feather } from '@expo/vector-icons';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { AppRegistry } from 'react-native';
-import { View, Animated } from 'react-native'; // Biblioteca de animações
+import { AppRegistry, View, Animated } from 'react-native';
 import firebaseConfig from './database/firebase';
 import { name as appName } from './app.json';
 
-// Importando as telas do aplicativo
 import Login from './components/login';
 import Cadastro from './components/cadastro';
 import Dashboard from './components/dashboard';
 import SettingsScreen from './components/SettingsScreen';
 import FavoritesScreen from './components/FavoritesScreen';
-import ProfileScreen from './components/ProfileScreen'; // Adicionando o ProfileScreen
-import CategoryClientsScreen from './components/CategoryClientsScreen'
-// Inicializando o Firebase
+import ProfileScreen from './components/ProfileScreen';
+import CategoryClientsScreen from './components/CategoryClientsScreen';
+
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 
-// Registrando o componente principal
 AppRegistry.registerComponent(appName, () => App);
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator(); // Cria um Tab Navigator
+const Tab = createBottomTabNavigator();
 
-// Cria o Tab Navigator para as três telas principais
 function MainTabNavigator() {
   return (
     <Tab.Navigator
@@ -36,8 +32,7 @@ function MainTabNavigator() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused }) => {
           let iconName;
-          let iconColor = focused ? '#fff' : '#0A3D52'; // Ícone #fff quando focado e #0A3D52 quando inativo
-          // Define o ícone para cada aba
+          let iconColor = focused ? '#fff' : '#0A3D52';
           if (route.name === 'Home') {
             iconName = 'home';
           } else if (route.name === 'Settings') {
@@ -46,7 +41,6 @@ function MainTabNavigator() {
             iconName = 'heart';
           }
 
-          // Animação de escala ao selecionar a aba
           const scale = focused ? new Animated.Value(1.1) : new Animated.Value(1);
           Animated.spring(scale, {
             toValue: focused ? 1.1 : 1,
@@ -55,61 +49,58 @@ function MainTabNavigator() {
           }).start();
 
           return (
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: focused ? '#0A3D52' : 'transparent', // Destaque quando focado
-                borderRadius: 50, // Borda arredondada
-                padding: 10, // Espaço ao redor do ícone para o destaque
-              }}
-            >
-              <Animated.View style={{ transform: [{ scale }]}}>
-                <Feather name={iconName} size={28} color={iconColor} /> 
+            <View style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: focused ? '#0A3D52' : 'transparent',
+              borderRadius: 50,
+              padding: 13,
+            }}>
+              <Animated.View style={{ transform: [{ scale }] }}>
+                <Feather name={iconName} size={28} color={iconColor} />
               </Animated.View>
             </View>
           );
         },
-        tabBarActiveTintColor: '#fff', // Cor ativa branca
-        tabBarInactiveTintColor: '#0A3D52',  // Cor inativa
+        tabBarActiveTintColor: '#fff',
+        tabBarInactiveTintColor: '#0A3D52',
         tabBarStyle: {
-          backgroundColor: '#fff', // Cor de fundo da tabBar
+          backgroundColor: '#fff',
           borderTopWidth: 0,
           elevation: 10,
-          height: 80, // Altura da tabBar ajustada para centralizar os ícones
-          paddingBottom: 0, // Remove o padding inferior para centralizar os ícones
-          paddingTop: 0, // Remove o padding superior para dar mais espaço
-          marginHorizontal: 0, // Remove as margens laterais
-          marginBottom: 0, // Remove a margem inferior
-          position: 'absolute', // Fixa a tabBar no fundo
+          height: 66,
+          paddingBottom: 0,
+          paddingTop: 0,
+          marginHorizontal: 0,
+          marginBottom: 0,
+          position: 'absolute',
         },
-        tabBarShowLabel: false, // Remove os nomes dos ícones
+        tabBarShowLabel: false,
       })}
     >
       <Tab.Screen
         name="Settings"
-        component={SettingsScreen} // Componente Configurações
+        component={SettingsScreen}
         options={{ headerShown: false }}
       />
       <Tab.Screen
         name="Home"
-        component={Dashboard} // Componente Home
+        component={Dashboard}
         options={{ headerShown: false }}
       />
       <Tab.Screen
         name="Favorites"
-        component={FavoritesScreen} // Componente Favoritos
+        component={FavoritesScreen}
         options={{ headerShown: false }}
       />
     </Tab.Navigator>
   );
 }
 
-// Função principal de navegação Stack + Tab
 function Home() {
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="Cadastro" // Define "Cadastro" como a tela inicial
       screenOptions={{
         headerStyle: {
           backgroundColor: '#2E2A2A',
@@ -122,7 +113,7 @@ function Home() {
     >
       <Stack.Screen
         name="Login"
-        component={Login} // Corrigido para exibir a tela de Login primeiro
+        component={Login}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -132,8 +123,8 @@ function Home() {
       />
       <Stack.Screen
         name="Dashboard"
-        component={MainTabNavigator} // Navega para o Tab Navigator ao fazer login
-        options={{ headerShown: false }}
+        component={MainTabNavigator}
+        options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
         name="SettingsScreen"
@@ -141,13 +132,13 @@ function Home() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="ProfileScreen" // Adicionando a rota da tela de perfil
-        component={ProfileScreen} // Tela de perfil da loja
-        options={{ headerShown: false }}
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name="CategoryClientsScreen" // Adicionando a rota da tela de perfil
-        component={CategoryClientsScreen } // Tela de perfil da loja
+        name="CategoryClientsScreen"
+        component={CategoryClientsScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

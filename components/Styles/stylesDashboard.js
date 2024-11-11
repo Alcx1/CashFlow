@@ -1,5 +1,5 @@
-import { StyleSheet, Dimensions } from 'react-native';
-const { width } = Dimensions.get('window');
+import { StyleSheet, Dimensions, Platform } from 'react-native';
+const { width,height } = Dimensions.get('window');
 
 const stylesDashboard = StyleSheet.create({
   header: {
@@ -17,11 +17,11 @@ const stylesDashboard = StyleSheet.create({
     alignItems: 'center', // Alinha os itens verticalmente no centro
     backgroundColor: '#0A3D52',
     elevation: 1,
-    height: 37,
-    borderRadius: 20,
+    height: 40,
+    borderRadius: 12,
     width: '100%',
   },
-  input: {
+   input: {
     fontFamily: 'Montserrat_500Medium',
     paddingHorizontal: 20,
     fontSize: 18,
@@ -84,8 +84,9 @@ const stylesDashboard = StyleSheet.create({
   categoriesContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    padding: 10,
+    justifyContent: 'space-between',  // Espaçamento entre os itens horizontalmente
+    alignItems: 'center',             // Centralizar verticalmente
+    padding: 10,                      // Espaçamento interno para o container
   },
   categoryItem: {
     alignItems: 'center',
@@ -96,9 +97,10 @@ const stylesDashboard = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+    marginHorizontal: 5,  
   },
   categoryText: {
     marginTop: 10,
@@ -115,7 +117,7 @@ const stylesDashboard = StyleSheet.create({
     fontWeight: 'bold',
     maxWidth: '80%', // Limita o espaço para o e-mail em 80% da largura da tela
     flexShrink: 1, // Reduz o texto se necessário
-    marginLeft:-80,
+    marginLeft: -80,
     marginTop: 14
 
   },
@@ -125,13 +127,13 @@ const stylesDashboard = StyleSheet.create({
     fontWeight: 'bold',
     maxWidth: '80%', // Limita o espaço para o e-mail em 80% da largura da tela
     flexShrink: 1, // Reduz o texto se necessário
-    marginLeft:-53,
+    marginLeft: -53,
   },
   profileIcon: {
     position: 'absolute',
     left: 40,  // Ícone de perfil fica mais à esquerda
     top: 50,
-  }, 
+  },
   destaquesContainer: {
     marginTop: 20,
     paddingHorizontal: 15,
@@ -150,41 +152,42 @@ const stylesDashboard = StyleSheet.create({
     width: 250,
     height: 100,
     backgroundColor: '#f0f0f0',
-    borderRadius: 10,
-    marginRight: 15,
-    padding: 10,
+    borderRadius: 25,
+    marginRight: 10,
+    padding: 12,
     left: 40,
-    alignItems: 'center', 
+    alignItems: 'center',
     // Alinha o conteúdo à esquerda
   },
   logo: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     borderRadius: 10,
     marginBottom: 10,
     position: 'absolute', // Para permitir o alinhamento no canto
-    top: 15, // Ajuste para o topo do item
+    top: 20, // Ajuste para o topo do item
     left: 10, // Ajuste para o canto esquerdo
   },
   destaqueLoja: {
-    fontSize: 13,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#333llll',
-    marginTop: 10, 
+    marginTop: 5,
     flexDirection: 'row',
     left: 30,// Deixa espaço abaixo da logo
   },
   destaqueCategoria: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#666',
     marginBottom: 5,
     alignItems: 'center',
     flexDirection: 'row',
-    left: 20,
-    top:5
+    left: 'auto',
+    top: 10
   },
   estrelas: {
     flexDirection: 'row',
+    left: 100
   },
   sectionTitle: {
     fontSize: 20,
@@ -202,17 +205,43 @@ const stylesDashboard = StyleSheet.create({
     paddingHorizontal: 20,
     marginVertical: 10,
     marginRight: 220, // Controla a margem da esquerda
-    textAlign: 'left', // Garante que o texto fique alinhado à esquerda
+    textAlign: 'left',
+    top: -15 // Garante que o texto fique alinhado à esquerda
   },
   settingsIcon: {
     marginLeft: 300,
   },
-    arrow: {
-      position: 'absolute',
-      left: 10,
-      top: '90%',
-      zIndex: 1,
-    },
+  arrow: {
+    position: 'absolute',
+    left: Platform.select({ ios: width * 0.01, android: width * 0.03 }),
+    top: Platform.select({ ios: height * 0.83, android: height * 0.85 }),
+    zIndex: 1,
+},
+  starIcon: {
+    width: 14,
+    height: 14,
+    left: -6,
+    top: 0
+  },
+  clienteName: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+    flex: 1,
+  },
+  clienteItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#f9f9f9',
+    marginBottom: 10,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
 });
 
 export default stylesDashboard;

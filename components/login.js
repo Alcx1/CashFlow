@@ -10,19 +10,22 @@ import {
   SafeAreaView,
   LayoutAnimation,
   UIManager,
-  Platform
+  Platform,
+  Switch,
+  Alert,
+  Image
 } from 'react-native';
-const { width, height } = Dimensions.get('window');
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth'; // Importe a função de redefinição de senha
-import firebaseConfig from '../database/firebase';  // Certifique-se de importar sua configuração
-import styles from './Styles/styles'; // Importa estilos globais
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import firebaseConfig from '../database/firebase';
+import styles from './Styles/styles';
 
-// Inicialize o Firebase
+const { width, height } = Dimensions.get('window');
+
 const firebaseApp = initializeApp(firebaseConfig);
-const auth = getAuth(firebaseApp);  // Inicialize o serviço de autenticação
+const auth = getAuth(firebaseApp);
 
-// Habilita o LayoutAnimation para Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
@@ -34,7 +37,20 @@ export default class Login extends Component {
       email: '',
       password: '',
       isLoading: false,
+      rememberMe: false,
     };
+  }
+
+  async componentDidMount() {
+    const savedEmail = await AsyncStorage.getItem('email');
+    const savedPassword = await AsyncStorage.getItem('password');
+    if (savedEmail && savedPassword) {
+      this.setState({
+        email: savedEmail,
+        password: savedPassword,
+        rememberMe: true,
+      });
+    }
   }
 
   updateInputVal = (val, prop) => {
@@ -43,11 +59,26 @@ export default class Login extends Component {
     this.setState(state);
   };
 
+  toggleRememberMe = () => {
+    this.setState((prevState) => ({ rememberMe: !prevState.rememberMe }));
+  };
+
+  saveCredentials = async () => {
+    const { email, password, rememberMe } = this.state;
+    if (rememberMe) {
+      await AsyncStorage.setItem('email', email);
+      await AsyncStorage.setItem('password', password);
+    } else {
+      await AsyncStorage.removeItem('email');
+      await AsyncStorage.removeItem('password');
+    }
+  };
+
   userLogin = () => {
     const { email, password } = this.state;
 
     if (email === '' || password === '') {
-      alert('Informe seu login, por gentileza.');
+      Alert.alert('Atenção', 'Informe seu login, por gentileza.');
       this.setState({
         isLoading: false,
       });
@@ -58,36 +89,36 @@ export default class Login extends Component {
 
       signInWithEmailAndPassword(auth, email, password)
         .then((res) => {
-          LayoutAnimation.easeInEaseOut(); // Animação para navegação fluida
+          LayoutAnimation.easeInEaseOut();
           this.setState({
             isLoading: false,
             email: '',
             password: '',
           });
+          this.saveCredentials();
           this.props.navigation.navigate('Dashboard');
         })
         .catch((error) => {
           this.setState({ isLoading: false });
-          alert('E-mail ou senha incorretos');
+          Alert.alert('Erro', 'E-mail ou senha incorretos');
         });
     }
   };
 
-  // Função para resetar senha
   resetPassword = () => {
     const { email } = this.state;
 
     if (email === '') {
-      alert('Por favor, insira o seu e-mail para redefinir sua senha.');
+      Alert.alert('Atenção', 'Por favor, insira o seu e-mail para redefinir sua senha.');
       return;
     }
 
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        alert('Um link para redefinir sua senha foi enviado para o seu e-mail.');
+        Alert.alert('Sucesso', 'Um link para redefinir sua senha foi enviado para o seu e-mail.');
       })
       .catch((error) => {
-        alert('Ocorreu um erro. Verifique se o e-mail está correto.');
+        Alert.alert('Erro', 'Ocorreu um erro. Verifique se o e-mail está correto.');
       });
   };
 
@@ -102,17 +133,21 @@ export default class Login extends Component {
 
     return (
       <SafeAreaView style={styles.container}>
+        <Image source={require('../assets/Efeito linhas.png')} style={styles.backgroundLogo2} />
         <Text style={styles.saudacao}>Olá,</Text>
         <Text style={styles.saudacao2}>Seja bem vindo(a).</Text>
 
+        
         <TextInput
           color="#1E1E1E"
           placeholderTextColor="#1E1E1E"
           placeholder="Seu e-mail"
-          style={styles.inputEmail}
+          style={styles.inputEmailLogin}
           value={this.state.email}
           onChangeText={(val) => this.updateInputVal(val, 'email')}
         />
+
+
         <TextInput
           color="#1E1E1E"
           placeholderTextColor="#1E1E1E"
@@ -123,24 +158,32 @@ export default class Login extends Component {
           onChangeText={(val) => this.updateInputVal(val, 'password')}
           maxLength={15}
         />
+        <View style={styles.rememberMeContainer}>
+          <Text style={styles.rememberMeText}>Lembrar Login</Text>
+          <Switch
+            value={this.state.rememberMe}
+            onValueChange={this.toggleRememberMe}
+          />
+        </View>
 
         <TouchableOpacity
-          style={styles.buttonRegister}
+          style={styles.buttonLogin}
           onPress={() => this.userLogin()}>
           <Text style={styles.textButton}>Login</Text>
         </TouchableOpacity>
+        
+        
 
-        <TouchableOpacity
-          onPress={() => this.resetPassword()}>
+        <TouchableOpacity onPress={() => this.resetPassword()}>
           <Text style={styles.textForgot}>Esqueceu sua senha?</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => {
-            LayoutAnimation.easeInEaseOut(); // Animação para navegação fluida
+            LayoutAnimation.easeInEaseOut();
             this.props.navigation.navigate('Cadastro');
           }}>
-          <Text style={styles.textForgot}>Não possui conta? Clique aqui.</Text>
+          <Text style={styles.textForgot}>Não possui conta? Entre aqui.</Text>
         </TouchableOpacity>
       </SafeAreaView>
     );

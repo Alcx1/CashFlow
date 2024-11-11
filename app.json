@@ -1,27 +1,14 @@
 {
   "expo": {
-    "name": "app-carr",
-    "slug": "snack-d4c43008-db41-4fed-8fe7-966e5ab3bee4",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+    "extra": {
+      "eas": {
+        "projectId": "5f6cf42b-4e6f-4f15-886e-832593fd67d0"
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "owner": "alcx1",
+    "slug": "search-services",
+    "android": {
+      "package": "com.alcx1.searchservices"
     }
   }
 }

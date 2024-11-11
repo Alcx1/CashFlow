@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, Alert, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons'; // Ícones
 import { createClient } from '@supabase/supabase-js'; // Supabase Client
+import styles from './Styles/ClientsCategory'
 
 // Inicializar Supabase
 const supabaseUrl = 'https://feibkjxiwztfupcgqync.supabase.co';
@@ -69,7 +70,10 @@ export default class CategoryClientsScreen extends Component {
                 <Image source={{ uri: 'https://via.placeholder.com/50' }} style={styles.logo} />
                 <Text style={styles.clienteName}>{this.truncateName(cliente.razao_social)}</Text>
                 <View style={styles.estrelas}>
-                  <Feather name="star" size={14} color="#FFD700" />
+                <Image
+                    source={require('../assets/star.png')} // Caminho correto para sua estrela
+                    style={styles.starIcon}
+                  />
                   <Text style={styles.notaText}>
                     {cliente.nota !== null ? cliente.nota.toFixed(1) : 'N/A'}
                   </Text>
@@ -89,70 +93,3 @@ export default class CategoryClientsScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  sectionTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginVertical: 15,
-  },
-  clientesContainer: {
-    flexDirection: 'column',
-    paddingHorizontal: 10,
-  },
-  clienteItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    backgroundColor: '#f9f9f9',
-    marginBottom: 10,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  logo: {
-    width: 50,
-    height: 50,
-    marginRight: 15,
-    borderRadius: 25,
-  },
-  clienteName: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  estrelas: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 'auto',
-  },
-  notaText: {
-    marginLeft: 5,
-    fontSize: 14,
-    color: '#FFD700',
-  },
-  noResults: {
-    fontSize: 16,
-    color: '#999',
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  backButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: '#333',
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  backButtonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-});
