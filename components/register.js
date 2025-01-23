@@ -10,11 +10,9 @@ import {
   LayoutAnimation,
   UIManager,
   Platform,
-  Switch,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import firebaseConfig from '../database/firebase';
 import styles from './Styles/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -26,83 +24,81 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-export default class Login extends Component {
+export default class Signup extends Component {
   constructor() {
     super();
     this.state = {
       email: '',
       password: '',
       isLoading: false,
-      rememberMe: false,
     };
-  }
-
-  async componentDidMount() {
-    const savedEmail = await AsyncStorage.getItem('email');
-    const savedPassword = await AsyncStorage.getItem('password');
-    if (savedEmail && savedPassword) {
-      this.setState({
-        email: savedEmail,
-        password: savedPassword,
-        rememberMe: true,
-      });
-    }
   }
 
   updateInputVal = (val, field) => {
     this.setState({ [field]: val });
   };
 
-  toggleRememberMe = () => {
-    this.setState((prevState) => ({ rememberMe: !prevState.rememberMe }));
-  };
-
-  saveCredentials = async () => {
-    const { email, password, rememberMe } = this.state;
-    if (rememberMe) {
-      await AsyncStorage.setItem('email', email);
-      await AsyncStorage.setItem('password', password);
-    } else {
-      await AsyncStorage.removeItem('email');
-      await AsyncStorage.removeItem('password');
-    }
-  };
-
-  userLogin = () => {
+  registerUser = () => {
     const { email, password } = this.state;
+
     if (email.trim() === '' || password.trim() === '') {
-      Alert.alert('Atenção', 'Informe seu login, por gentileza.');
+      Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
 
     this.setState({ isLoading: true });
 
-    signInWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
-        LayoutAnimation.easeInEaseOut();
+        Alert.alert('Sucesso', 'Conta criada com sucesso!');
         this.setState({ isLoading: false, email: '', password: '' });
-        this.saveCredentials();
+        LayoutAnimation.easeInEaseOut();
         this.props.navigation.navigate('Dashboard');
       })
-      .catch(() => {
-        this.setState({ isLoading: false });
-        Alert.alert('Erro', 'E-mail ou senha incorretos');
+      .catch((error) => {
+        if (error.code === 'auth/email-already-in-use') {
+          signInWithEmailAndPassword(auth, email, password)
+            .then(() => {
+              Alert.alert('Bem-vindo de volta!', email);
+              this.setState({ isLoading: false, email: '', password: '' });
+              LayoutAnimation.easeInEaseOut();
+              this.props.navigation.navigate('Dashboard');
+            })
+            .catch((loginError) => {
+              this.setState({ isLoading: false });
+              Alert.alert('Erro ao fazer login', loginError.message);
+            });
+        } else {
+          this.setState({ isLoading: false });
+          Alert.alert('Erro', error.message);
+        }
       });
   };
 
-  resetPassword = () => {
+  forgotPassword = () => {
     const { email } = this.state;
+
     if (email.trim() === '') {
-      Alert.alert('Atenção', 'Por favor, insira o seu e-mail para redefinir sua senha.');
+      Alert.alert('Erro', 'Por favor, insira seu e-mail no campo e-mail.');
       return;
     }
 
+    this.setState({ isLoading: true });
+
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        Alert.alert('Sucesso', 'Um link para redefinir sua senha foi enviado para o seu e-mail.');
+        this.setState({ isLoading: false });
+        Alert.alert('Sucesso!', 'Um link de redefinição de senha foi enviado para seu e-mail.');
       })
-      .catch(() => {
-        Alert.alert('Erro', 'Ocorreu um erro. Verifique se o e-mail está correto.');
+      .catch((error) => {
+        this.setState({ isLoading: false });
+        if (error.code === 'auth/user-not-found') {
+          Alert.alert('Erro', 'E-mail não está cadastrado. Verifique e tente novamente.');
+        } else if (error.code === 'auth/invalid-email') {
+          Alert.alert('Erro', 'Formato do e-mail invalido.');
+        } else {
+          Alert.alert('Erro', 'Ocorreu um erro. Tente novamente mais tarde.');
+        }
       });
   };
 
@@ -110,7 +106,7 @@ export default class Login extends Component {
     if (this.state.isLoading) {
       return (
         <View style={styles.preloader}>
-          <ActivityIndicator size="large" color="#FF9A00" />
+          <ActivityIndicator size="large" color="#9E9E9E" />
         </View>
       );
     }
@@ -120,13 +116,13 @@ export default class Login extends Component {
         <View style={styles.header}>
           <Text style={styles.welcomeText}>Olá,</Text>
           <Text style={styles.welcomeText2}>Seja bem-vindo(a).</Text>
-          <Text style={styles.subtitle}>Entre para acessar suas despesas</Text>
+          <Text style={styles.subtitle}>Cadastre-se para acompanhar suas despesas</Text>
         </View>
 
         <View style={styles.inputContainer}>
           <Icon name="at" size={20} color="#B3B3B3" style={styles.inputIcon} />
           <TextInput
-            placeholder="Seu e-mail"
+            placeholder="Digite seu email"
             placeholderTextColor="#B3B3B3"
             style={styles.inputWithIcon}
             value={this.state.email}
@@ -137,7 +133,7 @@ export default class Login extends Component {
         <View style={styles.inputContainer}>
           <Icon name="lock" size={20} color="#B3B3B3" style={styles.inputIcon} />
           <TextInput
-            placeholder="Sua senha"
+            placeholder="Digite sua senha"
             placeholderTextColor="#B3B3B3"
             secureTextEntry
             style={styles.inputWithIcon}
@@ -146,19 +142,15 @@ export default class Login extends Component {
           />
         </View>
 
-        <TouchableOpacity onPress={this.forgotPassword} style={{ width: '80%' }}>
-          <Text style={styles.textButtonForgot}>Esqueceu a senha?</Text>
+        <TouchableOpacity style={styles.buttonEnter} onPress={this.registerUser}>
+          <Text style={styles.textButton}>Cadastrar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonEnter} onPress={this.userLogin}>
-          <Text style={styles.textButton}>Login</Text>
-        </TouchableOpacity>
-
-         <TouchableOpacity
+        <TouchableOpacity
           style={styles.clique}
-          onPress={() => this.props.navigation.navigate('Register')}
+          onPress={() => this.props.navigation.navigate('Login')}
         >
-          <Text style={styles.textForgotEnter}>Não possui conta? Cadastra-se aqui</Text>
+          <Text style={styles.textForgotEnter}>Já tem uma conta? Entrar.</Text>
         </TouchableOpacity>
       </SafeAreaView>
     );

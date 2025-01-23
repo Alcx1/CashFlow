@@ -14,7 +14,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // API Key do Google Maps
-const GOOGLE_MAPS_API_KEY = '';
+const GOOGLE_MAPS_API_KEY = 'AIzaSyCkt8SysTxQBhVixgZVljSrsmJyr5LHuKc';
 
 const ProfileScreen = ({ route, navigation }) => {
   const { loja, categoriaSelecionada } = route.params;

@@ -10,7 +10,7 @@ import firebaseConfig from './database/firebase';
 import { name as appName } from './app.json';
 
 import Login from './components/login';
-import Cadastro from './components/cadastro';
+import Register from './components/register';
 import Dashboard from './components/dashboard';
 import SettingsScreen from './components/SettingsScreen';
 import FavoritesScreen from './components/FavoritesScreen';
@@ -100,7 +100,7 @@ function MainTabNavigator() {
 function Home() {
   return (
     <Stack.Navigator
-      initialRouteName="Cadastro" // Define "Cadastro" como a tela inicial
+      initialRouteName="Register" 
       screenOptions={{
         headerStyle: {
           backgroundColor: '#2E2A2A',
@@ -117,8 +117,8 @@ function Home() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Cadastro"
-        component={Cadastro}
+        name="Register"
+        component={Register}
         options={{ headerShown: false }}
       />
       <Stack.Screen
