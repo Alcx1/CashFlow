@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   buttonEnter: {
     marginTop: 10,
-    backgroundColor: '#adff2f',
+    backgroundColor: '#2E8B57',
     width: '80%',
     height: 45,
     justifyContent: 'center',
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   textButtonForgot: {
     color: '#B3B3B3',
     fontWeight: 'bold',
-    fontSize: 12,
+    fontSize: 14,
     textAlign: 'right',  // Alinha o texto à direita
     alignSelf: 'flex-end',  // Posiciona o texto à direita dentro do contêiner pai
     marginRight: 8,  // Ajuste conforme necessário para espaçamento

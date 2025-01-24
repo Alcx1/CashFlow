@@ -15,7 +15,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
-import firebaseConfig from '../database/firebase';
+import firebaseConfig from '../Services/firebase';
 import styles from './Styles/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -80,7 +80,7 @@ export default class Login extends Component {
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         LayoutAnimation.easeInEaseOut();
-        this.setState({ isLoading: false, email: '', password: '' });
+        this.setState({ isLoading: true, email: '', password: '' });
         this.saveCredentials();
         this.props.navigation.navigate('Dashboard');
       })
@@ -97,12 +97,22 @@ export default class Login extends Component {
       return;
     }
 
+    this.setState({ isLoading: true });
+
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        Alert.alert('Sucesso', 'Um link para redefinir sua senha foi enviado para o seu e-mail.');
+        this.setState({ isLoading: false });
+        Alert.alert('Sucesso!', 'Um link de redefinição de senha foi enviado para seu e-mail.');  
       })
-      .catch(() => {
-        Alert.alert('Erro', 'Ocorreu um erro. Verifique se o e-mail está correto.');
+      .catch((error) => {
+        this.setState({ isLoading: false });
+        if (error.code === 'auth/user-not-found') {
+          Alert.alert('Erro', 'E-mail não está cadastrado. Verifique e tente novamente.');
+        } else if (error.code === 'auth/invalid-email') {
+          Alert.alert('Erro', 'Formato do e-mail invalido.');
+        } else {
+          Alert.alert('Erro', 'Ocorreu um erro. Tente novamente mais tarde.');
+        }
       });
   };
 
@@ -146,7 +156,7 @@ export default class Login extends Component {
           />
         </View>
 
-        <TouchableOpacity onPress={this.forgotPassword} style={{ width: '80%' }}>
+        <TouchableOpacity onPress={this.resetPassword} style={{ width: '80%' }}>
           <Text style={styles.textButtonForgot}>Esqueceu a senha?</Text>
         </TouchableOpacity>
 

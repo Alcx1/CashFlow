@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
-import firebaseConfig from '../database/firebase';
+import firebaseConfig from '../Services/firebase';
 import styles from './Styles/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 

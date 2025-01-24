@@ -76,7 +76,7 @@ const stylesDashboard = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#1C1C1C',
     alignItems: 'center', // Alinha os itens verticalmente no centro
     justifyContent: 'space-between',
 
@@ -242,6 +242,65 @@ const stylesDashboard = StyleSheet.create({
     shadowRadius: 2,
     elevation: 2,
   },
+  greetingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start', 
+    marginLeft: 20,             
+    },
+    greetingText: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: '#fff',
+      margin: 14,
+      marginTop: 18
+    },
+    profileImage: {
+      width: 28,
+      height: 28,
+      borderRadius: 30, // Deixa a imagem redonda
+      borderWidth: 2,
+      borderColor: '#ccc',
+      backgroundColor: '#fff',
+      marginTop: 10
+    },
+    saldoTitulo: {
+      fontSize: 12,
+      color: '#888',
+    },
+    saldoValor: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: '#fff',
+    },
+    transacoesContainer: {
+      flex: 1,
+    },
+    transacoesTitulo: {
+      fontSize: 16,
+      marginBottom: 10,
+      fontWeight: 'bold',
+      color: '#fff'
+    },
+    transacaoItem: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      padding: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: '#eee',
+    },
+    transacaoTipo: {
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
+    transacaoDescricao: {
+      fontSize: 14,
+      color: '#fff',
+    },
+    transacaoValor: {
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
 });
 
 export default stylesDashboard;
